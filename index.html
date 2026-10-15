@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>TasCal</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TasCal">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    body { font-family: -apple-system, sans-serif; background: #f4f8fb; color: #1a202c;
+           margin: 0; padding: 40px 24px; text-align: center; line-height: 1.8; }
+    img { width: 96px; height: 96px; border-radius: 22px; }
+    a { color: #1a73e8; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <img src="apple-touch-icon.png" alt="TasCal">
+  <h1>TasCal</h1>
+  <p>共有ボタン →「ホーム画面に追加」で、アプリとして追加できます。</p>
+  <p><a id="open-link" href="#">アプリを開く</a></p>
+  <script>
+    // ★GASアプリのURL（…/exec で終わるもの）に差し替える
+    const APP_URL = 'https://script.google.com/macros/s/AKfycbx_YQ0_SYWAEvBJEWYaeUhlpab0s9-n6u4F_kTCBfz64zh796FDs4ACUqywqpoM0vkjxw/exec';
+
+    document.getElementById('open-link').href = APP_URL;
+
+    // ホーム画面から起動された時だけ転送する（Safariで開いた時は転送しない）
+    const isStandalone = window.navigator.standalone === true
+      || window.matchMedia('(display-mode: standalone)').matches;
+    if (isStandalone) {
+      location.replace(APP_URL);
+    }
+  </script>
+</body>
+</html>
