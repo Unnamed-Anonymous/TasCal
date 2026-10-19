@@ -4,268 +4,218 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>TasCal</title>
-  <meta name="description" content="学校からのメールを、AIが整理してカレンダーへ。TasCal 導入案内">
+  <meta name="description" content="学校のメールが、そのまま予定表になる。TasCal 導入案内">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="TasCal">
   <link rel="apple-touch-icon" href="TasCal-icon-v3.png">
   <style>
     :root {
-      --bg: #f4f8fb;
-      --bg-alt: #ffffff;
-      --text: #14202b;
-      --sub: #5d6b78;
-      --line: rgba(20, 32, 43, 0.10);
-      --blue: #1a73e8;
-      --green: #1e9e6a;
-      --grad: linear-gradient(120deg, #1a73e8 0%, #1e9e6a 100%);
-      --shadow: 0 18px 48px rgba(20, 60, 90, 0.10);
+      --bg: #f3f6f9; --ink: #0f1a25; --sub: #5a6877; --line: rgba(15,26,37,.14);
+      --blue: #1a73e8; --green: #1e9e6a; --paper: #ffffff;
+      --shadow: 0 24px 60px rgba(15,50,80,.14);
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0f1622;
-        --bg-alt: #172131;
-        --text: #eef3f8;
-        --sub: #9db0c2;
-        --line: rgba(255, 255, 255, 0.12);
-        --blue: #5b9dff;
-        --green: #44c593;
-        --grad: linear-gradient(120deg, #5b9dff 0%, #44c593 100%);
-        --shadow: 0 18px 48px rgba(0, 0, 0, 0.40);
+        --bg: #0e1520; --ink: #eef3f8; --sub: #9aacbd; --line: rgba(255,255,255,.14);
+        --blue: #5b9dff; --green: #44c593; --paper: #162131;
+        --shadow: 0 24px 60px rgba(0,0,0,.5);
       }
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     body {
-      margin: 0; background: var(--bg); color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-      line-height: 1.9; -webkit-font-smoothing: antialiased;
+      margin: 0; background: var(--bg); color: var(--ink); line-height: 1.95;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+      -webkit-font-smoothing: antialiased;
       padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
     }
-    .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
-    section { padding: 88px 0; }
-    .eyebrow {
-      font-size: 12px; letter-spacing: 0.22em; color: var(--blue); font-weight: 700;
-      text-transform: uppercase; margin: 0 0 18px;
-    }
-    h2 {
-      font-size: clamp(26px, 5vw, 40px); line-height: 1.35; font-weight: 800;
-      letter-spacing: 0.01em; margin: 0 0 20px;
-    }
-    .lead { color: var(--sub); font-size: 16px; max-width: 34em; margin: 0; }
+    .serif, h1, h2, h3 { font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 28px; }
+    h2 { font-size: clamp(26px, 4.6vw, 40px); line-height: 1.5; font-weight: 700; margin: 0 0 18px; }
+    h3 { font-size: clamp(20px, 3.2vw, 26px); line-height: 1.55; font-weight: 700; margin: 0 0 14px; }
+    p { margin: 0 0 14px; }
+    .sub { color: var(--sub); }
+    .label { font-size: 13px; color: var(--sub); margin: 0 0 14px; padding-left: 14px; border-left: 3px solid var(--blue); line-height: 1.4; }
 
-    /* ---------- Hero ---------- */
-    .hero { text-align: center; padding: 96px 0 72px; }
-    .hero img.icon {
-      width: 104px; height: 104px; border-radius: 24px; box-shadow: var(--shadow);
-      margin-bottom: 28px;
-    }
-    .hero h1 {
-      font-size: clamp(44px, 11vw, 84px); line-height: 1.05; margin: 0 0 22px;
-      font-weight: 800; letter-spacing: -0.02em;
-      background: var(--grad); -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent; color: transparent;
-    }
-    .hero .catch {
-      font-size: clamp(20px, 4.6vw, 32px); font-weight: 700; line-height: 1.5; margin: 0 0 18px;
-    }
-    .hero .sub { color: var(--sub); font-size: 15px; margin: 0 auto; max-width: 30em; }
-    .scroll-hint {
-      display: inline-block; margin-top: 44px; color: var(--sub); font-size: 12px;
-      letter-spacing: 0.2em; text-decoration: none;
-    }
-    .scroll-hint::after { content: ""; display: block; width: 1px; height: 40px; margin: 10px auto 0; background: var(--line); }
+    /* 写真の枠 */
+    figure { margin: 0; }
+    .shot img { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--paper); }
+    .shot figcaption { margin-top: 12px; font-size: 12.5px; color: var(--sub); }
 
-    /* ---------- 必須案内 ---------- */
-    .notice {
-      background: var(--bg-alt); border: 1px solid var(--line); border-radius: 28px;
-      padding: 44px 32px; box-shadow: var(--shadow);
+    /* ヒーロー：背景に方眼 */
+    .hero {
+      position: relative; padding: 72px 0 88px; overflow: hidden;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 72px 72px; background-position: -1px -1px;
+      -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent);
     }
-    .notice h2 { margin-bottom: 14px; }
-    .steps { list-style: none; counter-reset: s; margin: 36px 0 0; padding: 0; display: grid; gap: 22px; }
-    .steps li {
-      counter-increment: s; position: relative; padding-left: 64px; min-height: 44px;
-    }
-    .steps li::before {
-      content: counter(s); position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%;
-      background: var(--grad); color: #fff; font-weight: 800; font-size: 18px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .steps strong { display: block; font-size: 17px; margin-bottom: 2px; }
-    .steps span { color: var(--sub); font-size: 14px; }
-    .share-ico { width: 1.1em; height: 1.1em; vertical-align: -0.2em; color: var(--blue); }
-    .note-small { margin: 30px 0 0; font-size: 12.5px; color: var(--sub); }
+    .hero-in { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
+    .brand img { width: 52px; height: 52px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+    .brand b { font-size: 22px; letter-spacing: .04em; }
+    .hero h1 { font-size: clamp(34px, 6.4vw, 60px); line-height: 1.35; margin: 0 0 24px; font-weight: 700; }
+    .hero .lead { color: var(--sub); font-size: 16px; max-width: 28em; }
+    .hero-link { display: inline-block; margin-top: 18px; font-size: 14px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 4px; }
 
-    /* ---------- 機能 ---------- */
-    .features { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 44px; }
-    @media (min-width: 720px) { .features { grid-template-columns: 1fr 1fr; } }
-    .feature {
-      background: var(--bg-alt); border: 1px solid var(--line); border-radius: 24px; padding: 30px 28px;
-    }
-    .feature .no {
-      font-size: 13px; font-weight: 800; letter-spacing: 0.15em;
-      background: var(--grad); -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent; color: transparent;
-    }
-    .feature h3 { font-size: 20px; line-height: 1.45; margin: 8px 0 10px; font-weight: 800; }
-    .feature p { margin: 0; color: var(--sub); font-size: 14.5px; }
-    .extras { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
-    .chip {
-      border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px;
-      font-size: 13px; color: var(--sub); background: var(--bg-alt);
-    }
+    /* 段組み */
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding: 80px 0; border-top: 1px solid var(--line); }
+    .row.rev .txt { order: 2; }
+    .row .narrow { max-width: 330px; margin: 0 auto; }
 
-    /* ---------- 写真ギャラリー(写真が無い枠は自動で消える) ---------- */
-    .gallery { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 44px; }
-    @media (min-width: 720px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
-    .gallery figure { margin: 0; }
-    .gallery img {
-      width: 100%; display: block; border-radius: 22px; box-shadow: var(--shadow);
-      border: 1px solid var(--line);
-    }
-    .gallery figcaption { margin-top: 12px; font-size: 13px; color: var(--sub); text-align: center; }
+    /* はじめかた */
+    .start { border-top: 1px solid var(--line); padding: 88px 0 24px; }
+    .start-head { max-width: 36em; margin-bottom: 40px; }
+    .step { display: grid; grid-template-columns: 72px 1fr 1fr; gap: 28px; align-items: start; padding: 32px 0; border-top: 1px solid var(--line); }
+    .step .n { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; font-size: 46px; line-height: 1; color: var(--blue); }
+    .step h3 { font-size: 20px; margin-bottom: 8px; }
+    .step p { color: var(--sub); font-size: 14.5px; margin: 0; }
+    .step .shot { grid-column: 3; }
+    .step:not(.has-img) p { grid-column: 2 / 4; max-width: 40em; }
+    .note { margin: 8px 0 0; padding: 18px 0 18px 20px; border-left: 3px solid var(--green); font-size: 13.5px; color: var(--sub); }
 
-    /* ---------- PDF ---------- */
-    .guide { text-align: center; }
-    .guide .lead { margin: 0 auto; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 10px; margin-top: 36px;
-      padding: 16px 34px; border-radius: 999px; border: none; text-decoration: none;
-      font-size: 16px; font-weight: 700; color: #fff; background: var(--grad);
-      box-shadow: 0 12px 28px rgba(26, 115, 232, 0.30); transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .btn:active { transform: scale(0.97); }
+    /* 細かな機能の一覧 */
+    .list { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+    .list div { padding: 28px 20px 28px 0; border-right: 1px solid var(--line); margin-right: 20px; }
+    .list div:last-child { border-right: 0; margin-right: 0; }
+    .list b { display: block; font-size: 15px; margin-bottom: 6px; }
+    .list span { font-size: 13px; color: var(--sub); line-height: 1.8; display: block; }
+
+    /* ライトとダーク */
+    .themes { border-top: 1px solid var(--line); padding: 80px 0; }
+    .themes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
+
+    /* ガイド */
+    .guide { border-top: 1px solid var(--line); padding: 88px 0 96px; text-align: center; }
+    .guide .sub { max-width: 30em; margin: 0 auto; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; margin-top: 32px; padding: 16px 36px; border-radius: 999px; text-decoration: none; font-size: 16px; font-weight: 700; color: #fff; background: var(--blue); box-shadow: 0 14px 30px rgba(26,115,232,.3); }
     .btn svg { width: 20px; height: 20px; }
-    .btn.disabled {
-      background: var(--line); color: var(--sub); box-shadow: none; pointer-events: none;
-    }
-    .btn-note { margin-top: 14px; font-size: 12.5px; color: var(--sub); }
+    .btn.disabled { background: var(--line); color: var(--sub); box-shadow: none; pointer-events: none; }
+    .btn-note { margin: 14px 0 0; font-size: 12.5px; color: var(--sub); }
+    footer { border-top: 1px solid var(--line); padding: 32px 0 48px; text-align: center; font-size: 12px; color: var(--sub); }
 
-    footer { text-align: center; padding: 56px 0 72px; color: var(--sub); font-size: 12px; border-top: 1px solid var(--line); }
-
-    /* ---------- ふわっと表示 ---------- */
-    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.8s ease, transform 0.8s ease; }
-    .reveal.in { opacity: 1; transform: none; }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .reveal { opacity: 1; transform: none; transition: none; }
+    @media (max-width: 760px) {
+      .hero { padding: 40px 0 56px; }
+      .hero-in, .row, .themes-grid { grid-template-columns: 1fr; gap: 32px; }
+      .row { padding: 56px 0; }
+      .row.rev .txt { order: 0; }
+      .step { grid-template-columns: 52px 1fr; gap: 16px; }
+      .step .n { font-size: 34px; }
+      .step .shot, .step:not(.has-img) p { grid-column: 2; }
+      .list { grid-template-columns: 1fr 1fr; }
+      .list div { border-right: 0; margin-right: 0; border-bottom: 1px solid var(--line); }
     }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
 <body>
 
-  <header class="wrap hero">
-    <img class="icon" src="TasCal-icon-v3.png" alt="TasCalのアイコン">
-    <h1>TasCal</h1>
-    <p class="catch">締切を、もう逃さない。<br>学校のメールが、そのまま予定になる。</p>
-    <p class="sub">Classroomなど学校から届くメールをAIが読み解き、教科・締切・やることを整理して、カレンダーへ。</p>
-    <a class="scroll-hint" href="#start">SCROLL</a>
+  <header class="hero">
+    <div class="wrap hero-in">
+      <div>
+        <div class="brand"><img src="TasCal-icon-v3.png" alt=""><b class="serif">TasCal</b></div>
+        <h1>学校のメールが、<br>そのまま予定表になる。</h1>
+        <p class="lead">届いたメールをAIが読み取り、教科・締切・やることを整理。カレンダーへの登録まで自動で行います。</p>
+        <a class="hero-link" href="#start">ご利用の前に</a>
+      </div>
+      <figure class="shot">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="shot-calendar-dark.jpg">
+          <img src="shot-calendar.jpg" alt="TasCalのカレンダー画面" onerror="this.closest('figure').style.display='none'">
+        </picture>
+      </figure>
+    </div>
   </header>
 
-  <section id="start">
+  <section class="start" id="start">
     <div class="wrap">
-      <div class="notice reveal">
-        <p class="eyebrow">Getting Started</p>
-        <h2>TasCalは、ホーム画面に追加して<br>はじめて使えます。</h2>
-        <p class="lead">このページは案内専用です。アプリは、ホーム画面に追加したアイコンから起動します。</p>
-
-        <ol class="steps">
-          <li>
-            <strong>Safariで、このページを開く</strong>
-            <span>iPhone・iPadのSafariで、このページを表示してください。</span>
-          </li>
-          <li>
-            <strong>「ホーム画面に追加」</strong>
-            <span>
-              共有ボタン
-              <svg class="share-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>
-              →「ホーム画面に追加」。名前が「TasCal」になっていることを確認して追加します。「Webアプリとして開く」のスイッチが出たらオンにしてください。
-            </span>
-          </li>
-          <li>
-            <strong>ホーム画面のTasCalから起動</strong>
-            <span>初回はGoogleアカウントでのログインと、権限の許可が必要です。その後、設定画面でGemini APIキー(Google AI Studioで無料取得)を登録すれば、準備完了です。</span>
-          </li>
-        </ol>
-        <p class="note-small">詳しい手順と推奨設定は、下の「導入ガイド」にまとめています。</p>
+      <div class="start-head">
+        <p class="label">ご利用の前に</p>
+        <h2>TasCalは、ホーム画面に追加してお使いください。</h2>
+        <p class="sub">このページは案内専用です。アプリは、ホーム画面に追加したアイコンから起動します。</p>
       </div>
+
+      <div class="step">
+        <div class="n">1</div>
+        <div><h3>Safariでこのページを開く</h3><p>iPhoneまたはiPadのSafariで表示します。</p></div>
+      </div>
+      <div class="step has-img">
+        <div class="n">2</div>
+        <div>
+          <h3>ホーム画面に追加</h3>
+          <p>共有ボタンから「ホーム画面に追加」を選びます。名前が「TasCal」になっていることを確認して追加します。「Webアプリとして開く」が表示されたら、オンにしてください。</p>
+        </div>
+        <figure class="shot"><img src="step-addhome.jpg" alt="ホーム画面に追加の画面" onerror="this.closest('figure').style.display='none'"></figure>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div><h3>ホーム画面から起動</h3><p>初回はGoogleアカウントでログインし、権限を許可します。続いて設定画面でGemini APIキーを登録すれば、準備は完了です。キーはGoogle AI Studioで無料で取得できます。</p></div>
+      </div>
+      <p class="note">初回は「このアプリはGoogleで確認されていません」と表示されます。個人が開発したアプリのためです。メール・カレンダー・ドライブへのアクセス許可を求めます。詳しい手順は、下の導入ガイドで案内します。</p>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <p class="eyebrow reveal">Features</p>
-      <h2 class="reveal">できること。</h2>
-      <p class="lead reveal">メールを読む、整理する、予定に入れる。その手間を、まるごと引き受けます。</p>
-
-      <div class="features">
-        <article class="feature reveal">
-          <span class="no">01</span>
-          <h3>届いた瞬間、AIが読み解く</h3>
-          <p>Gemini AIがメールを解析し、教科(14分類)・種類・締切日・やることを自動で抽出。長い本文を読まなくても、要点がひと目でわかります。</p>
-        </article>
-        <article class="feature reveal">
-          <span class="no">02</span>
-          <h3>締切は、自動でカレンダーへ</h3>
-          <p>提出期限のあるメールは、Googleカレンダーに終日の予定として自動登録。登録し忘れ、という失敗がなくなります。</p>
-        </article>
-        <article class="feature reveal">
-          <span class="no">03</span>
-          <h3>添付も、リンクも、ひとまとめ</h3>
-          <p>メールの添付ファイルに加えて、Classroomに投稿された資料・リンク・フォーム・YouTubeまで取得。カードから、元のGmailやClassroomへもワンタップで移動できます。</p>
-        </article>
-        <article class="feature reveal">
-          <span class="no">04</span>
-          <h3>開かなくても、最新に</h3>
-          <p>アプリを開いていない間も、約1分ごとにバックグラウンドで新着メールを処理。開いたときには、もう整理済みです。</p>
-        </article>
-        <article class="feature reveal">
-          <span class="no">05</span>
-          <h3>探す、絞る、すぐ戻る</h3>
-          <p>教科別タブ、既読・未読、期限告知かお知らせか、添付の有無、⭐重要メール。キーワード検索で、目的のメールへ一直線にジャンプします。</p>
-        </article>
-        <article class="feature reveal">
-          <span class="no">06</span>
-          <h3>自分の予定も、メールと結ぶ</h3>
-          <p>テスト勉強や持ち物など、自分で予定を作成可能。関連するメールカードと紐付ければ、予定からメールへ、すぐに辿れます。</p>
-        </article>
+      <div class="row" style="border-top:1px solid var(--line); margin-top:64px;">
+        <div class="txt">
+          <p class="label">自動で整理</p>
+          <h2>届いた瞬間に、<br>AIが読み取る。</h2>
+          <p class="sub">Geminiがメールを解析し、教科(14分類)・種類・締切日・やることを抽出します。長い本文を読まなくても、要点がひと目でわかります。</p>
+          <p class="sub">提出期限のあるメールは、Googleカレンダーに終日の予定として自動で登録されます。</p>
+        </div>
+        <figure class="shot">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="shot-detail-dark.jpg">
+            <img src="shot-detail.jpg" alt="予定の詳細画面" onerror="this.closest('figure').style.display='none'">
+          </picture>
+          <figcaption>予定の詳細。メールと紐付けて、いつでも元のメールへ戻れます。</figcaption>
+        </figure>
       </div>
 
-      <div class="extras reveal">
-        <span class="chip">ライト / ダークテーマ</span>
-        <span class="chip">土日・祝日の色分け</span>
-        <span class="chip">完了済みタスクの管理</span>
-        <span class="chip">スマホ・iPad対応</span>
+      <div class="row rev">
+        <div class="txt">
+          <p class="label">メールボックス</p>
+          <h2>探す、絞る、すぐ開く。</h2>
+          <p class="sub">教科別のタブに、既読・未読、期限告知とお知らせ、添付の有無、⭐重要の絞り込み。キーワード検索で、目的のメールへ直接移動できます。</p>
+          <p class="sub">添付ファイルに加え、Classroomの資料・リンク・フォームも取得。カードから元のGmailやClassroomへ、ワンタップで移動できます。</p>
+        </div>
+        <figure class="shot narrow">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="shot-mailbox-dark.jpg">
+            <img src="shot-mailbox.jpg" alt="メールボックス画面" onerror="this.closest('figure').style.display='none'">
+          </picture>
+        </figure>
+      </div>
+
+      <div class="list">
+        <div><b>約1分ごとに自動更新</b><span>アプリを閉じている間も、新着メールを処理します。</span></div>
+        <div><b>自分の予定も作れる</b><span>テスト勉強や持ち物を、メールと紐付けて管理できます。</span></div>
+        <div><b>土日・祝日の色分け</b><span>カレンダーで休日がひと目でわかります。</span></div>
+        <div><b>完了済みの管理</b><span>終わった予定は、完了タブへ移せます。</span></div>
       </div>
     </div>
   </section>
 
-  <section id="gallery-section">
+  <section class="themes" style="margin-top:80px;">
     <div class="wrap">
-      <p class="eyebrow reveal">Screens</p>
-      <h2 class="reveal">画面のイメージ。</h2>
-      <div class="gallery">
-        <figure class="reveal">
-          <img src="shot-calendar.jpg" alt="カレンダー画面" onerror="this.closest('figure').remove(); checkGallery();">
-          <figcaption>カレンダー</figcaption>
-        </figure>
-        <figure class="reveal">
-          <img src="shot-mailbox.jpg" alt="メールボックス画面" onerror="this.closest('figure').remove(); checkGallery();">
-          <figcaption>メールボックス</figcaption>
-        </figure>
-        <figure class="reveal">
-          <img src="shot-detail.jpg" alt="予定の詳細画面" onerror="this.closest('figure').remove(); checkGallery();">
-          <figcaption>予定の詳細</figcaption>
-        </figure>
+      <p class="label">デザイン</p>
+      <h2>ライトでも、ダークでも。</h2>
+      <p class="sub">テーマは、アプリ内でいつでも切り替えられます。</p>
+      <div class="themes-grid">
+        <figure class="shot"><img src="shot-calendar.jpg" alt="ライトテーマ" onerror="this.closest('figure').style.display='none'"><figcaption>ライト</figcaption></figure>
+        <figure class="shot"><img src="shot-calendar-dark.jpg" alt="ダークテーマ" onerror="this.closest('figure').style.display='none'"><figcaption>ダーク</figcaption></figure>
       </div>
     </div>
   </section>
 
   <section class="guide">
-    <div class="wrap reveal">
-      <p class="eyebrow">Guide</p>
+    <div class="wrap">
+      <p class="label" style="display:inline-block;">導入ガイド</p>
       <h2>導入ガイド及び推奨設定</h2>
-      <p class="lead">はじめての設定から、おすすめの使い方まで。PDFにまとめています。</p>
+      <p class="sub">はじめての設定から、おすすめの使い方までをPDFにまとめています。</p>
       <a class="btn" id="pdf-btn" href="TasCal-guide.pdf" download>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>
         <span id="pdf-label">PDFをダウンロード</span>
@@ -274,62 +224,31 @@
     </div>
   </section>
 
-  <footer>
-    <div class="wrap">TasCal</div>
-  </footer>
+  <footer>TasCal</footer>
 
   <script>
     // ★GASアプリのURL（…/exec で終わるもの）に差し替える
     //   ※画面には表示しない。ホーム画面から起動された時だけ、ここへ転送する。
     const APP_URL = 'https://script.google.com/macros/s/AKfycbx2RR_0PSg7O2NSvyPaNCMKN03dtaozSLXTF68ewcVrlU9JR0mWuwTWRDzQhAZkQH-f/exec';
 
-    // ホーム画面から起動された時だけ転送する（Safariで開いた時は転送しない）
     const isStandalone = window.navigator.standalone === true
       || window.matchMedia('(display-mode: standalone)').matches;
     if (isStandalone) {
       location.replace(APP_URL);
     }
 
-    // PDFがまだリポジトリに無い間は、ボタンを「準備中」にする
-    (function checkPdf() {
+    // PDFがリポジトリに無い間は、ボタンを「準備中」にする
+    (function () {
       const btn = document.getElementById('pdf-btn');
-      const label = document.getElementById('pdf-label');
-      const note = document.getElementById('pdf-note');
       fetch(btn.getAttribute('href'), { method: 'HEAD', cache: 'no-store' })
-        .then(res => {
-          if (!res.ok) throw new Error('not found');
-        })
+        .then(res => { if (!res.ok) throw new Error('not found'); })
         .catch(() => {
           btn.classList.add('disabled');
           btn.removeAttribute('href');
           btn.removeAttribute('download');
-          label.textContent = '導入ガイド 準備中';
-          note.textContent = '公開までしばらくお待ちください。';
+          document.getElementById('pdf-label').textContent = '導入ガイド 準備中';
+          document.getElementById('pdf-note').textContent = '公開までしばらくお待ちください。';
         });
-    })();
-
-    // 写真が1枚も無い場合は、ギャラリーの区画ごと隠す
-    function checkGallery() {
-      const rest = document.querySelectorAll('#gallery-section figure').length;
-      if (rest === 0) {
-        const sec = document.getElementById('gallery-section');
-        if (sec) sec.style.display = 'none';
-      }
-    }
-
-    // ふわっと表示
-    (function setupReveal() {
-      const items = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) {
-        items.forEach(el => el.classList.add('in'));
-        return;
-      }
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(en => {
-          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-        });
-      }, { threshold: 0.12 });
-      items.forEach(el => io.observe(el));
     })();
   </script>
 </body>
