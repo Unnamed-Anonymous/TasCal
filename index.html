@@ -43,16 +43,18 @@
     .shot img { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--paper); }
     .shot figcaption { margin-top: 12px; font-size: 12.5px; color: var(--sub); }
 
-    /* ヒーロー：背景に方眼 */
-    .hero {
-      position: relative; padding: 72px 0 88px; overflow: hidden;
+    /* ヒーロー：背景の方眼は、文字とは別のレイヤー（::before）に描く。
+       下に向かって薄くするマスクは、方眼のレイヤーだけにかける（文字・ボタンは薄くならない） */
+    .hero { position: relative; padding: 72px 0 88px; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
       background-image:
         linear-gradient(var(--line) 1px, transparent 1px),
         linear-gradient(90deg, var(--line) 1px, transparent 1px);
       background-size: 72px 72px; background-position: -1px -1px;
       -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent);
     }
-    .hero-in { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+    .hero-in { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
     .brand { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
     .brand img { width: 52px; height: 52px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
     .brand b { font-size: 22px; letter-spacing: .04em; }
