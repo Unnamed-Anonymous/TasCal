@@ -109,10 +109,6 @@
     .list b { display: block; font-size: 15px; margin-bottom: 6px; }
     .list span { font-size: 13px; color: var(--sub); line-height: 1.8; display: block; }
 
-    /* ライトとダーク */
-    .themes { border-top: 1px solid var(--line); padding: 80px 0; }
-    .themes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
-
     /* 導入ガイド（枠で囲み、ページ内で最も目立たせる） */
     .guide { border-top: 1px solid var(--line); padding: 88px 0 96px; }
     .guide-card {
@@ -138,7 +134,7 @@
 
     @media (max-width: 760px) {
       .hero { padding: 40px 0 56px; }
-      .hero-in, .row, .themes-grid { grid-template-columns: 1fr; gap: 32px; }
+      .hero-in, .row { grid-template-columns: 1fr; gap: 32px; }
       .row { padding: 56px 0; }
       .row.rev .txt { order: 0; }
       .step { grid-template-columns: 52px 1fr; gap: 16px; }
@@ -264,7 +260,7 @@
     </div>
   </section>
 
-  <section>
+  <section style="padding-bottom:80px;">
     <div class="wrap">
       <div class="row" style="border-top:1px solid var(--line);">
         <div class="txt">
@@ -302,18 +298,6 @@
         <div><b>自分の予定も作れる</b><span>テスト勉強や持ち物をメールと紐付けて管理できます。</span></div>
         <div><b>土日・祝日の色分け</b><span>カレンダーで休日がひと目でわかります。</span></div>
         <div><b>完了済みの管理</b><span>終わった予定は完了タブへ移せます。</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="themes" style="margin-top:80px;">
-    <div class="wrap">
-      <p class="label">デザイン</p>
-      <h2>ライトでも、ダークでも。</h2>
-      <p class="sub">テーマはアプリ内でいつでも切り替えられます。</p>
-      <div class="themes-grid">
-        <figure class="shot"><img src="shot-calendar.jpg" alt="ライトテーマ" onerror="this.closest('figure').style.display='none'"><figcaption>ライト</figcaption></figure>
-        <figure class="shot"><img src="shot-calendar-dark.jpg" alt="ダークテーマ" onerror="this.closest('figure').style.display='none'"><figcaption>ダーク</figcaption></figure>
       </div>
     </div>
   </section>
