@@ -12,13 +12,13 @@
   <style>
     :root {
       --bg: #f3f6f9; --ink: #0f1a25; --sub: #5a6877; --line: rgba(15,26,37,.14);
-      --blue: #1a73e8; --green: #1e9e6a; --paper: #ffffff;
+      --blue: #1a73e8; --green: #1e9e6a; --warn: #e08a00; --paper: #ffffff;
       --shadow: 0 24px 60px rgba(15,50,80,.14);
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #0e1520; --ink: #eef3f8; --sub: #9aacbd; --line: rgba(255,255,255,.14);
-        --blue: #5b9dff; --green: #44c593; --paper: #162131;
+        --blue: #5b9dff; --green: #44c593; --warn: #f2a93b; --paper: #162131;
         --shadow: 0 24px 60px rgba(0,0,0,.5);
       }
     }
@@ -37,6 +37,10 @@
     p { margin: 0 0 14px; }
     .sub { color: var(--sub); }
     .label { font-size: 13px; color: var(--sub); margin: 0 0 14px; padding-left: 14px; border-left: 3px solid var(--blue); line-height: 1.4; }
+
+    /* 最上部の帯：導入ガイドへの案内（背景と文字の色は、ライト・ダークで自動的に反転する） */
+    .notice { background: var(--ink); color: var(--bg); text-align: center; font-size: 13.5px; line-height: 1.7; padding: 10px 20px; }
+    .notice a { color: inherit; font-weight: 700; text-decoration: none; border-bottom: 1px solid currentColor; margin-left: 8px; white-space: nowrap; }
 
     /* 写真の枠 */
     figure { margin: 0; }
@@ -62,8 +66,13 @@
     .hero .lead { color: var(--sub); font-size: 16px; max-width: 28em; }
     .hero-link { display: inline-block; margin-top: 18px; font-size: 14px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 4px; }
 
+    /* ヒーロー内の導入ガイドのボタン */
+    .hero-cta { margin-top: 28px; }
+    .hero-cta .btn { margin-top: 0; }
+    .cta-note { margin: 12px 0 0; font-size: 12.5px; color: var(--sub); }
+
     /* パソコン等（iPhone・iPad以外）向けの「アプリを開く」 */
-    .open-box { display: none; margin-top: 28px; }
+    .open-box { display: none; margin-top: 22px; }
     .open-box.show { display: block; }
     .open-box .btn { margin-top: 0; }
     .open-note { margin: 12px 0 0; font-size: 12.5px; color: var(--sub); max-width: 28em; line-height: 1.8; }
@@ -84,6 +93,15 @@
     .step:not(.has-img) p { grid-column: 2 / 4; max-width: 40em; }
     .note { margin: 8px 0 0; padding: 18px 0 18px 20px; border-left: 3px solid var(--green); font-size: 13.5px; color: var(--sub); }
 
+    /* 「ここは概要です。詳しくは導入ガイドへ」の注意 */
+    .callout {
+      margin: 28px 0 0; padding: 26px 28px; border: 1.5px solid var(--warn); border-left-width: 6px; border-radius: 12px;
+      background: var(--paper); display: flex; gap: 28px; align-items: center; justify-content: space-between;
+    }
+    .callout b { display: block; font-size: 17px; margin-bottom: 6px; }
+    .callout p { margin: 0; font-size: 14px; color: var(--sub); line-height: 1.85; }
+    .callout .btn { margin-top: 0; padding: 14px 28px; white-space: nowrap; }
+
     /* 細かな機能の一覧 */
     .list { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
     .list div { padding: 28px 20px 28px 0; border-right: 1px solid var(--line); margin-right: 20px; }
@@ -95,11 +113,25 @@
     .themes { border-top: 1px solid var(--line); padding: 80px 0; }
     .themes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
 
-    /* ガイド */
-    .guide { border-top: 1px solid var(--line); padding: 88px 0 96px; text-align: center; }
-    .guide .sub { max-width: 30em; margin: 0 auto; }
-    .btn { display: inline-flex; align-items: center; gap: 10px; margin-top: 32px; padding: 16px 36px; border-radius: 999px; text-decoration: none; font-size: 16px; font-weight: 700; color: #fff; background: var(--blue); box-shadow: 0 14px 30px rgba(26,115,232,.3); }
-    .btn svg { width: 20px; height: 20px; }
+    /* 導入ガイド（枠で囲み、ページ内で最も目立たせる） */
+    .guide { border-top: 1px solid var(--line); padding: 88px 0 96px; }
+    .guide-card {
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center;
+      padding: 48px; border-radius: 24px; background: var(--paper); border: 2px solid var(--blue); box-shadow: var(--shadow);
+    }
+    .guide-card h2 { margin-bottom: 14px; }
+    .guide-card .sub { margin-bottom: 0; }
+    .guide-actions { margin-top: 28px; }
+    .guide-actions .btn { margin-top: 0; }
+    .guide-dl { display: inline-block; margin: 16px 0 0 4px; font-size: 13px; color: var(--sub); }
+    .chapters-title { font-size: 13px; color: var(--sub); margin: 0 0 10px; }
+    .chapters { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+    .chapters li { display: flex; gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; line-height: 1.6; }
+    .chapters .no { font-family: "Hiragino Mincho ProN", "Yu Mincho", serif; font-size: 20px; color: var(--blue); min-width: 1.8em; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 32px; padding: 16px 36px; border-radius: 999px; text-decoration: none; font-size: 16px; font-weight: 700; color: #fff; background: var(--blue); box-shadow: 0 14px 30px rgba(26,115,232,.3); }
+    .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); box-shadow: none; }
     .btn.disabled { background: var(--line); color: var(--sub); box-shadow: none; pointer-events: none; }
     .btn-note { margin: 14px 0 0; font-size: 12.5px; color: var(--sub); }
     footer { border-top: 1px solid var(--line); padding: 32px 0 48px; text-align: center; font-size: 12px; color: var(--sub); }
@@ -114,11 +146,20 @@
       .step .shot, .step:not(.has-img) p { grid-column: 2; }
       .list { grid-template-columns: 1fr 1fr; }
       .list div { border-right: 0; margin-right: 0; border-bottom: 1px solid var(--line); }
+      .callout { flex-direction: column; align-items: stretch; gap: 18px; padding: 22px 20px; }
+      .callout .btn { width: 100%; }
+      .guide { padding: 64px 0 72px; }
+      .guide-card { grid-template-columns: 1fr; gap: 32px; padding: 28px 22px; }
+      .guide-actions .btn { width: 100%; }
+      .hero-cta .btn, .open-box .btn { width: 100%; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
 <body>
+
+  <!-- 最上部の帯：導入ガイドへの案内 -->
+  <div class="notice">ご利用の前に、必ず導入ガイド（PDF）をご確認ください。<a href="#guide">導入ガイドへ</a></div>
 
   <header class="hero">
     <div class="wrap hero-in">
@@ -126,13 +167,23 @@
         <div class="brand"><img src="TasCal-icon-v3.png" alt=""><b class="serif">TasCal</b></div>
         <h1>学校のメールが<br>そのまま予定表になる。</h1>
         <p class="lead">届いたメールをAIが読み取り、教科・締切・やることを整理。カレンダーへの登録まで自動で行います。</p>
-        <a class="hero-link" href="#start">ご利用の前に</a>
+
+        <!-- 導入ガイドのボタン（ページ内の主役） -->
+        <div class="hero-cta">
+          <a class="btn pdf-link" href="TasCal-guide.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+            <span class="pdf-label">導入ガイドを開く（PDF）</span>
+          </a>
+          <p class="cta-note">初めてお使いになる方は、先にお読みください。</p>
+        </div>
 
         <!-- iPhone・iPad以外（パソコンなど）の時だけ表示される -->
         <div class="open-box" id="open-box">
-          <a class="btn" id="open-app" href="#">アプリを開く</a>
+          <a class="btn ghost" id="open-app" href="#">アプリを開く</a>
           <p class="open-note">パソコンなどではホーム画面への追加は不要です。このボタンからそのままお使いいただけます。</p>
         </div>
+
+        <a class="hero-link" href="#start">ホーム画面への追加の概要を見る</a>
       </div>
       <figure class="shot">
         <picture>
@@ -148,7 +199,7 @@
       <div class="start-head">
         <p class="label">ご利用の前に</p>
         <h2>このアプリはホーム画面に追加してお使いください。</h2>
-        <p class="sub">iPhone・iPadの場合の案内です。このページは案内専用で、アプリはホーム画面に追加したアイコンから起動します。</p>
+        <p class="sub">iPhone・iPadの場合の案内です。このページは案内専用で、アプリはホーム画面に追加したアイコンから起動します。ここに載せているのは概要です。実際の操作は、導入ガイドに沿って進めてください。</p>
       </div>
 
       <div class="step">
@@ -167,13 +218,55 @@
         <div class="n">3</div>
         <div><h3>ホーム画面から起動</h3><p>初回はメールを受け取りたいGoogleアカウントでログインし、権限を許可します。続いて設定画面でGemini APIキーを登録すれば、準備は完了です。キーはGoogle AI Studioで無料で取得できます。</p></div>
       </div>
-      <p class="note">初回は「このアプリはGoogleで確認されていません」と表示されます。個人が開発したアプリのためです。メール・カレンダー・ドライブへのアクセス許可を求めます。詳しい手順は下の導入ガイドで案内します。</p>
+      <p class="note">初回は「このアプリはGoogleで確認されていません」と表示されます。個人が開発したアプリのためです。メール・カレンダー・ドライブへのアクセス許可を求めます。</p>
+
+      <div class="callout">
+        <div>
+          <b>つまずきやすい手順は、導入ガイドに載っています。</b>
+          <p>権限画面の操作、APIキーの取得と登録、Gmailの推奨設定は、写真つきで案内しています。ご利用の前に、必ずご確認ください。</p>
+        </div>
+        <a class="btn pdf-link" href="TasCal-guide.pdf" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+          <span class="pdf-label">導入ガイドを開く</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 導入ガイド（枠で囲んだ、ページ内で最も目立つ欄） -->
+  <section class="guide" id="guide">
+    <div class="wrap">
+      <div class="guide-card">
+        <div>
+          <p class="label">導入ガイド</p>
+          <h2>導入ガイド及び推奨設定</h2>
+          <p class="sub">はじめての設定から、おすすめの使い方までをPDFにまとめています。初めてお使いになる方は、必ず先にお読みください。</p>
+          <div class="guide-actions">
+            <a class="btn pdf-link" id="pdf-btn" href="TasCal-guide.pdf" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+              <span class="pdf-label">導入ガイドを開く（PDF）</span>
+            </a>
+            <a class="guide-dl pdf-link" href="TasCal-guide.pdf" download data-hide-missing>ダウンロードして保存する</a>
+          </div>
+          <p class="btn-note pdf-note"></p>
+        </div>
+        <div>
+          <p class="chapters-title">このガイドに載っていること</p>
+          <ol class="chapters">
+            <li><span class="no">01</span><span>ホーム画面に追加する</span></li>
+            <li><span class="no">02</span><span>初回の権限画面</span></li>
+            <li><span class="no">03</span><span>Gemini APIキーの取得と登録</span></li>
+            <li><span class="no">04</span><span>推奨設定</span></li>
+            <li><span class="no">05</span><span>利用可能な機能</span></li>
+          </ol>
+        </div>
+      </div>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <div class="row" style="border-top:1px solid var(--line); margin-top:64px;">
+      <div class="row" style="border-top:1px solid var(--line);">
         <div class="txt">
           <p class="label">自動で整理</p>
           <h2>届いた瞬間に<br>AIが読み取る。</h2>
@@ -225,19 +318,6 @@
     </div>
   </section>
 
-  <section class="guide">
-    <div class="wrap">
-      <p class="label" style="display:inline-block;">導入ガイド</p>
-      <h2>導入ガイド及び推奨設定</h2>
-      <p class="sub">はじめての設定から、おすすめの使い方までをPDFにまとめています。</p>
-      <a class="btn" id="pdf-btn" href="TasCal-guide.pdf" download>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>
-        <span id="pdf-label">PDFをダウンロード</span>
-      </a>
-      <p class="btn-note" id="pdf-note"></p>
-    </div>
-  </section>
-
   <footer>TasCal</footer>
 
   <script>
@@ -263,17 +343,22 @@
       document.getElementById('open-box').classList.add('show');
     }
 
-    // PDFがリポジトリに無い間は、ボタンを「準備中」にする
+    // PDFがリポジトリに無い間は、PDFへのボタンをすべて「準備中」にする
     (function () {
-      const btn = document.getElementById('pdf-btn');
-      fetch(btn.getAttribute('href'), { method: 'HEAD', cache: 'no-store' })
+      const links = document.querySelectorAll('.pdf-link');
+      if (!links.length) return;
+      fetch('TasCal-guide.pdf', { method: 'HEAD', cache: 'no-store' })
         .then(res => { if (!res.ok) throw new Error('not found'); })
         .catch(() => {
-          btn.classList.add('disabled');
-          btn.removeAttribute('href');
-          btn.removeAttribute('download');
-          document.getElementById('pdf-label').textContent = '導入ガイド 準備中';
-          document.getElementById('pdf-note').textContent = '公開までしばらくお待ちください。';
+          links.forEach(a => {
+            if (a.hasAttribute('data-hide-missing')) { a.style.display = 'none'; return; }
+            a.classList.add('disabled');
+            a.removeAttribute('href');
+            a.removeAttribute('target');
+            const label = a.querySelector('.pdf-label');
+            if (label) label.textContent = '導入ガイド 準備中';
+          });
+          document.querySelectorAll('.pdf-note').forEach(n => { n.textContent = '公開までしばらくお待ちください。'; });
         });
     })();
   </script>
